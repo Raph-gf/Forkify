@@ -79,7 +79,7 @@ class RecipeView {
   <div class="recipe__ingredients">
     <h2 class="heading--2">Recipe ingredients</h2>
     <ul class="recipe__ingredient-list">
-  ${this.#data.ingredients.map(this.#generateMarkupIngredient).join('')}
+  ${this.#data.ingredients.map(this._generateMarkupIngredient).join('')}
  
   </div>
 
@@ -140,8 +140,8 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  #generateMarkupIngredient() {
-    ing => `
+  _generateMarkupIngredient(ing) {
+    return `
     <li class="recipe__ingredient">
         <svg class="recipe__icon">
           <use href="${icons}#icon-check"></use>
