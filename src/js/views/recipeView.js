@@ -14,6 +14,11 @@ class RecipeView {
   #clear() {
     this.#parentElement.innerHTML = '';
   }
+  addHandlerRender(handler) {
+    ['hashchange', 'load'].forEach(event =>
+      window.addEventListener(event, handler)
+    );
+  }
   #generateMarkup() {
     return `  <figure class="recipe__fig">
     <img src="${this.#data.image}" alt=${
