@@ -10,7 +10,9 @@ export const state = {
     page: 1,
     resultsPerPage: RESULT_PER_PAGE,
   },
+  bookmarks: [],
 };
+console.log(state);
 
 export const loadRecipe = async function (id) {
   try {
@@ -46,6 +48,7 @@ export const loadSearchResults = async query => {
         image: rec.image_url,
       };
     });
+    state.search.page = 1;
   } catch (err) {
     console.error(`${err.message} 💥 `);
     throw err;
@@ -65,4 +68,12 @@ export const getSearchResultsPage = (page = state.search.page) => {
   const start = (page - 1) * state.search.resultsPerPage;
   const end = page * state.search.resultsPerPage;
   return state.search.results.slice(start, end);
+};
+
+export const addBookmark = recipe => {
+  // add bookmark
+  state.bookmarks.push(recipe);
+
+  // mark current recipe as bookmark
+  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
 };
