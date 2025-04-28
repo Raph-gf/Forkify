@@ -9,16 +9,6 @@ import bookmarksView from './views/bookmarksView.js';
 import paginationView from './views/paginationView.js';
 import addRecipeView from './views/addRecipeView.js';
 
-// if (import.meta.hot) {
-//   import.meta.hot.accept(newModule => {
-//     if (newModule) {
-//       console.log('updated');
-//     } else {
-//       console.error('Erreur de syntaxe ou autre problème dans le module.');
-//     }
-//   });
-// }
-
 const controlRecipes = async () => {
   try {
     const id = window.location.hash.slice(1);
@@ -101,20 +91,25 @@ const controlBookmarks = () => {
 
 const controlAddRecipe = async newRecipe => {
   try {
+    // Show loading spinner
     addRecipeView.renderSpinner();
 
+    // Upload the new recipe data
     await model.uploadRecipe(newRecipe);
 
-    console.log(model.state.recipe);
-
+    // Render recipe
     recipeView.render(model.state.recipe);
 
+    // Success message
     addRecipeView.renderMessage();
 
+    // Render bookmark view
     bookmarksView.render(model.state.bookmarks);
 
+    // Change ID in URL
     window.history.pushState(null, '', `#${model.state.recipe.id}`);
 
+    // Close form window
     setTimeout(function () {
       addRecipeView.toggleWindow();
     }, MODAL_CLOSE_SEC * 1000);
@@ -124,6 +119,10 @@ const controlAddRecipe = async newRecipe => {
   }
   console.log(newRecipe);
 };
+
+const Welcome = () => {
+  console.log('Welcome to Forkify');
+};
 const init = () => {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -132,6 +131,7 @@ const init = () => {
   searchView.addHandlerSearch(controlSearchResult);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHanlerUpload(controlAddRecipe);
+  Welcome();
 };
 
 const clearBookmarks = () => {
